@@ -1,11 +1,15 @@
 import React from 'react';
 
-import { Cart, Footer, FooterBanner, HeroBanner, Layout, Navbar, Product } from '../components';
+import { client } from '../lib/client';
 
-const Home = () => {
+import { FooterBanner, HeroBanner, Product } from '../components';
+
+const Home = ({ products, bannerData }) => {
+
   return (
     <>
-      <HeroBanner />
+      <HeroBanner heroBanner={bannerData.length && bannerData[0] } />
+
 
       <div className="products-heading">
         <h2>Best selling products</h2>
@@ -13,13 +17,42 @@ const Home = () => {
       </div>
 
       <div className='products-container'>
-        {["Product 1", "Product 2"].map((product) => product)}
+        {/* {["product1", "Product2"].map((product) => product)} */}
+        {products?.map((product) => product.name)}
       </div>
 
-
-      <Footer />
+      <FooterBanner />
     </>
   )
+};
+
+// const client = createClient({
+//   projectId: 'k5hwfddx',
+//   dataset: 'production',
+//   apiVersion: '2023-03-30',
+//   useCdn: true
+// });
+
+// const builder = imageUrlBuilder(client);
+
+// function urlFor(source) {
+//   return builder.image(source);
+// }
+
+
+export async function getStaticProps() {
+  const products = await client.fetch('*[_type == "product"]');
+
+  const bannerData = await client.fetch('*[_type == "banner"]');
+
+  return {
+    props: {
+      products,
+      bannerData
+    }
+  };
 }
+
+
 
 export default Home;
