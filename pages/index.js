@@ -18,26 +18,13 @@ const Home = ({ products, bannerData }) => {
 
       <div className='products-container'>
         {/* {["product1", "Product2"].map((product) => product)} */}
-        {products?.map((product) => product.name)}
+        {products?.map((product) => <Product key={product._id} product={product} />)}
       </div>
 
-      <FooterBanner />
+      <FooterBanner footerBanner={ bannerData && bannerData[0] } />
     </>
   )
 };
-
-// const client = createClient({
-//   projectId: 'k5hwfddx',
-//   dataset: 'production',
-//   apiVersion: '2023-03-30',
-//   useCdn: true
-// });
-
-// const builder = imageUrlBuilder(client);
-
-// function urlFor(source) {
-//   return builder.image(source);
-// }
 
 
 export async function getStaticProps() {
